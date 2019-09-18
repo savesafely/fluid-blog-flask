@@ -2,10 +2,11 @@
 from . import home
 from flask import render_template
 
-
-def view(html):
-    return render_template('home/' + html)
-
 @home.route('/')
+@home.route('/index')
 def index():
-    return view('index.html')
+    return render_template('home/index.html')
+
+@home.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
