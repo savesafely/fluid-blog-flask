@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html"><meta name="generator" content="Hexo 3.9.0">
+  
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="一位 Python &amp; Java 后端工程师的技术博客，主要分享 Python 数据爬虫、逆向反编译、Java、Spring Boot 等编程技术类文章，以及程序员的职场经验类话题。">
+  <meta name="author" content="张凯强">
+  <meta name="keywords" content="Python,Python3,爬虫,Spider,Scrapy,Crawl,Crawler,数据,爬取,抓取,逆向,反编译,程序员,编程,技术,Java,Spring,SpringBoot,JavaScript,博客,Blog,知乎,张凯强,zkqiang">
+  <title>适合 Python 初学者的一些技巧和坑 - 张凯强的技术博客</title>
+  <link rel="stylesheet" href="static/css/all.min.css">
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/mdb.min.css">
+  <link rel="stylesheet" href="static/css/github-markdown.min.css">
+  <link rel="stylesheet" href="static/css/font_1067060_qzomjdt8bmp.css">
+  
+    <link rel="stylesheet" href="static/css/github-v2.min.css">
+  
+  <link rel="stylesheet" href="static/css/main.css">
+
+  
+  <script>
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?829ca75dc8d623c50657258008415521";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+</head>
+
+
+<body>
+  <header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="Index.html">&nbsp;<strong>zkqiang&#39;s blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="Index.html">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="Index1.html">Archives</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="Index2.html">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="Index3.html">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2" style="background: url('static/image/20190728030406.jpg')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              <p>2018年 02月 26日 晚上</p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto">
+          <div class="markdown-body">
+            <h2 id="前言"><a href="" class="headerlink" title="前言"></a>前言</h2><p>前几天董大 <a href="javascript:;" rel="external nofollow noopener noreferrer" target="_blank">@董伟明</a> 的爱派森上线了，还发了一套 PPT 和视频，PPT 共有 75 页干货，讲了很多进阶的用法，也包括很多坑，非常适合刚入门的同学，免得再踩到。</p>
+<p><a href="javascript:;" rel="external nofollow noopener noreferrer" target="_blank">PPT 和视频的传送门</a></p>
+<br>
+
+<p>这里我提取部分容易忽视的，也就是大部分教程里没有的，加入自己的理解，同时语法改为 Python 3，也争取延伸一些，就当是做笔记了。</p>
+<h2 id="设置全局变量"><a href="" class="headerlink" title="设置全局变量"></a>设置全局变量</h2><p>有时候设置全局变量的需求并不是直接赋值，而是想从某个数据结构里引用生成，可以用下面这两种方法，推荐第二种，<code>golbals()</code> 支持字典用法很方便。</p>
+<pre><code class="python">&gt;&gt;&gt; d = {&#39;a&#39;: 1, &#39;b&#39;:2}
+&gt;&gt;&gt; # 粗暴的写法
+&gt;&gt;&gt; for k, v in d.items():
+...     exec &quot;{}={}&quot;.format(k, v)
+...
+&gt;&gt;&gt; # 文艺的写法
+&gt;&gt;&gt; globals().update(d)
+&gt;&gt;&gt; a, b
+(1, 2)
+&gt;&gt;&gt; &#39;a&#39;, &#39;b&#39;
+(&#39;a&#39;, &#39;b&#39;)
+&gt;&gt;&gt; globals()[&#39;a&#39;] = &#39;b&#39;
+&gt;&gt;&gt; a
+&#39;b&#39;</code></pre>
+<h2 id="字符串格式化"><a href="" class="headerlink" title="字符串格式化"></a>字符串格式化</h2><p>用 <code>format</code> 方法可以支持很多种格式，这里就不多说了，可以看官方文档。</p>
+<pre><code class="python">&gt;&gt;&gt; &quot;{key}={value}&quot;.format(key=&quot;a&quot;, value=10) # 使⽤命名参数
+&#39;a=10&#39;
+&gt;&gt;&gt; &quot;[{0:&lt;10}], [{0:^10}], [{0:*&gt;10}]&quot;.format(&quot;a&quot;) # 左中右对⻬
+&#39;[a         ], [    a     ], [*********a]&#39;
+&gt;&gt;&gt; &quot;{0.platform}&quot;.format(sys) # 成员
+&#39;darwin&#39;
+&gt;&gt;&gt; &quot;{0[a]}&quot;.format(dict(a=10, b=20)) # 字典
+&#39;10&#39;
+&gt;&gt;&gt; &quot;{0[5]}&quot;.format(range(10)) # 列表
+&#39;5&#39;
+&gt;&gt;&gt; &quot;My name is {0} :-{{}}&quot;.format(&#39;Fred&#39;) # 真得想显示{},需要双{}
+&#39;My name is Fred :-{}&#39;
+&gt;&gt;&gt; &quot;{0!r:20}&quot;.format(&quot;Hello&quot;)
+&quot;&#39;Hello&#39;             &quot;
+&gt;&gt;&gt; &quot;{0!s:20}&quot;.format(&quot;Hello&quot;)
+&#39;Hello               &#39;
+&gt;&gt;&gt; &quot;Today is: {0:%a %b %d %H:%M:%S %Y}&quot;.format(datetime.now())
+&#39;Today is: Mon Mar 31 23:59:34 2014&#39;</code></pre>
+<h2 id="列表去重"><a href="" class="headerlink" title="列表去重"></a>列表去重</h2><p>这里讲了两种方法，正常情况下set是更好的选择；</p>
+<p>（注：这里董大视频讲解有误，方法一单位是 1.1 微妙，是慢于 956 纳秒，我也自己测试了，确实两种情况都不如 set）</p>
+<pre><code class="python">&gt;&gt;&gt; l = [1, 2, 2, 3, 3, 3]
+&gt;&gt;&gt; list({}.fromkeys(l).keys())    # 利用构建字典键去重
+[1, 2, 3] # 列表去重(1)
+&gt;&gt;&gt; list(set(l))    # 常见set函数去重
+[1, 2, 3]
+In [2]: %timeit list(set(l))
+1000000 loops, best of 3: 956 ns per loop
+In [3]: %timeit list({}.fromkeys(l).keys())
+1000000 loops, best of 3: 1.1 µs per loop
+In [4]: l = [random.randint(1, 50) for i in range(10000)]
+In [5]: %timeit list(set(l))
+1000 loops, best of 3: 271 µs per loop
+In [6]: %timeit {}.fromkeys(l).keys()
+1000 loops, best of 3: 310 µs per loop </code></pre>
+<h2 id="操作字典"><a href="" class="headerlink" title="操作字典"></a>操作字典</h2><p>字典是 Python 很常用的数据结构，各种函数和方法要掌握。</p>
+<pre><code class="python">&gt;&gt;&gt; dict(([&quot;a&quot;, 1], [&quot;b&quot;, 2])) # ⽤两个序列类型构造字典
+{&#39;a&#39;: 1, &#39;b&#39;: 2}
+&gt;&gt;&gt; dict(zip(&quot;ab&quot;, range(2)))
+{&#39;a&#39;: 0, &#39;b&#39;: 1}
+&gt;&gt;&gt; dict(map(None, &quot;abc&quot;, range(2)))
+{&#39;a&#39;: 0, &#39;c&#39;: None, &#39;b&#39;: 1}
+&gt;&gt;&gt; dict.fromkeys(&quot;abc&quot;, 1) # ⽤序列做 key,并提供默认 value
+{&#39;a&#39;: 1, &#39;c&#39;: 1, &#39;b&#39;: 1}
+&gt;&gt;&gt; {k:v for k, v in zip(&quot;abc&quot;, range(3))} # 字典解析
+{&#39;a&#39;: 0, &#39;c&#39;: 2, &#39;b&#39;: 1}
+&gt;&gt;&gt; d = {&quot;a&quot;:1, &quot;b&quot;:2}
+&gt;&gt;&gt; d.setdefault(&quot;a&quot;, 100) # key 存在,直接返回 value 1 
+&gt;&gt;&gt; d.setdefault(&quot;c&quot;, 200) # key 不存在,先设置,后返回 200 
+&gt;&gt;&gt; d
+{&#39;a&#39;: 1, &#39;c&#39;: 200, &#39;b&#39;: 2}</code></pre>
+<h2 id="对字典进行逻辑操作"><a href="" class="headerlink" title="对字典进行逻辑操作"></a>对字典进行逻辑操作</h2><p>只能先转成键值对列表再进行操作，然后转回去；</p>
+<p>(注：这里原文是 Python 2 中 viewitems 方法，已经被 items 替代)</p>
+<pre><code class="python">&gt;&gt;&gt; d1 = dict(a = 1, b = 2)
+&gt;&gt;&gt; d2 = dict(b = 2, c = 3)
+&gt;&gt;&gt; d1 &amp; d2    # 字典不⽀支持该操作
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+TypeError: unsupported operand type(s) for &amp;: &#39;dict&#39; and &#39;dict&#39;
+&gt;&gt;&gt; v1 = d1.items()
+&gt;&gt;&gt; v2 = d2.items()
+&gt;&gt;&gt; dict(v1 &amp; v2)     # 交集
+{&#39;b&#39;: 2}
+&gt;&gt;&gt; dict(v1 | v2)     # 并集
+{&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3}
+&gt;&gt;&gt; dict(v1 - v2)     #差集(仅v1有,v2没有的)
+{&#39;a&#39;: 1}
+&gt;&gt;&gt; dict(v1 ^ v2)    # 对称差集 (不会同时出现在 v1 和 v2 中)
+{&#39;a&#39;: 1, &#39;c&#39;: 3}
+&gt;&gt;&gt; (&#39;a&#39;, 1) in v1 #判断
+True</code></pre>
+<h2 id="vars"><a href="" class="headerlink" title="vars"></a>vars</h2><p>返回对象object的属性和属性值的字典对象，如果没有参数，就打印当前调用位置的属性和属性值，类似 locals()。</p>
+<pre><code class="python">&gt;&gt;&gt; vars() is locals()
+True
+&gt;&gt;&gt; vars(sys) is sys.__dict__    # 可用于找类属性
+True</code></pre>
+<h2 id="实现上下文管理类"><a href="" class="headerlink" title="实现上下文管理类"></a>实现上下文管理类</h2><p>这里以自动关闭 DB 连接来举例：</p>
+<pre><code class="python">&gt;&gt;&gt; import pymongo
+&gt;&gt;&gt; class Operation(object):
+...     def __init__(self, database,
+...                  host=&#39;localhost&#39;, port=27017):
+...         self._db = pymongo.MongoClient(
+...                       host, port)[database]
+...     def __enter__(self):
+...         return self._db
+...     def __exit__(self, exc_type, exc_val, exc_tb):
+...         self._db.connection.disconnect()
+...
+&gt;&gt;&gt; with Operation(database=&#39;test&#39;) as db:
+...     print db.test.find_one()</code></pre>
+<h2 id="contextlib"><a href="" class="headerlink" title="contextlib"></a>contextlib</h2><p>这个模块主要包含一个装饰器 <code>contextmanager</code> ，作用是可以省去像上面那样改写魔术魔法，也能实现同样的类</p>
+<pre><code class="python">&gt;&gt;&gt; @contextlib.contextmanager
+... def operation(database, host=&#39;localhost&#39;, 
+                  port=27017):
+...     db = pymongo.MongoClient(host, port)[database]
+...     yield db
+...     db.connection.disconnect()
+... 
+&gt;&gt;&gt; import pymongo
+&gt;&gt;&gt; with operation(&#39;test&#39;) as db:
+...     print(db.test.find_one())</code></pre>
+<h2 id="包的构建"><a href="" class="headerlink" title="包的构建"></a>包的构建</h2><p>如果包里有一些模块不想被 <code>import *</code> 这样引用，可以用 <code>__all__</code> 把允许被引用的放进去：</p>
+<p><code>__all__ = [&quot;add&quot;, &quot;x&quot;]</code></p>
+<p>某些时候,包内的文件太多,需要分类存放到多个目录中,但⼜不想拆分成新的包或子包。这么做是允许的, 只要在 <code>__init__.py</code> 中⽤ <code>__path__</code> 指定所有子目录的全路径即可 (子目录可放在包外)，下面这段代码可以自动指定子目录。</p>
+<pre><code class="python">from os.path import abspath, join
+
+subdirs = lambda *dirs: [abspath(
+    join(__path__[0], sub)) for sub in dirs]
+__path__ = subdirs(&quot;a&quot;, &quot;b&quot;)</code></pre>
+<h2 id="slots"><a href="" class="headerlink" title="__slots__"></a>__slots__</h2><p>限制给类实例绑定属性，大量属性时减少内存占用</p>
+<pre><code class="python">&gt;&gt;&gt; class User(object):
+...     __slots__ = (&quot;name&quot;, &quot;age&quot;)
+...     def __init__(self, name, age):
+...         self.name = name
+...         self.age = age
+...
+&gt;&gt;&gt; u = User(&quot;Dong&quot;, 28)
+&gt;&gt;&gt; hasattr(u, &quot;__dict__&quot;)
+False
+&gt;&gt;&gt; u.title = &quot;xxx&quot;
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+AttributeError: &#39;User&#39; object has no attribute &#39;title&#39;</code></pre>
+<h2 id="cached-property"><a href="" class="headerlink" title="@cached_property"></a>@cached_property</h2><p>主要实现的功能是，被装饰的类实例方法在第一次调用后，会把值缓存下来，下次再调用会直接从 <strong>dict</strong> 取结果，避免了多次计算；你可以参考下面的代码实现这个装饰器。</p>
+<pre><code class="python">&gt;&gt;&gt; class cached_property(object):
+...     # from werkzeug.utils import cached_property
+...     def __init__(self, func, name=None, doc=None):
+...         self.__name__ = name or func.__name__
+...         self.__module__ = func.__module__
+...         self.__doc__ = doc or func.__doc__
+...         self.func = func
+...     def __get__(self, obj, type=None):
+...         if obj is None:
+...             return self
+...         value = obj.__dict__.get(self.__name__, _missing)
+...         if value is _missing:
+...             value = self.func(obj)
+...             obj.__dict__[self.__name__] = value
+...         return value</code></pre>
+<h2 id="元类里提前定义类方法"><a href="" class="headerlink" title="元类里提前定义类方法"></a>元类里提前定义类方法</h2><p>这样可以像定义基类一样，提前给类定义一些方法。</p>
+<pre><code class="python">&gt;&gt;&gt; class HelloMeta(type):
+...     def __new__(cls, name, bases, attrs):
+...         def __init__(cls, func):
+...             cls.func = func
+...         def hello(cls):
+...             print &#39;hello world&#39;
+...         t = type.__new__(cls, name, bases, attrs)
+...         t.__init__ = __init__
+...         t.hello = hello
+...         return t     # 最后要返回创建的类
+...
+&gt;&gt;&gt; class Hello(object):
+...     __metaclass__ = HelloMeta
+...
+&gt;&gt;&gt; h = Hello(lambda x: x+1)
+&gt;&gt;&gt; h.hello()
+hello world</code></pre>
+<h2 id="开发陷阱-一-：可变的默认参数"><a href="" class="headerlink" title="开发陷阱(一)：可变的默认参数"></a>开发陷阱(一)：可变的默认参数</h2><p>把临时变量作为默认参数里确实是不错的办法，但要警惕默认参数必须指向一个不可变类型，否则会踩到下面的坑</p>
+<pre><code class="python">&gt;&gt;&gt; def append_to(element, to=[]):
+...     to.append(element)
+...     return to
+... 
+&gt;&gt;&gt; my_list = append_to(12)
+&gt;&gt;&gt; my_list
+[12]
+&gt;&gt;&gt; my_other_list = append_to(42)
+&gt;&gt;&gt; my_other_list
+[12, 42]    # 由于[]是可变类型，上次调用的元素还在里面
+# 正确的做法是如下
+&gt;&gt;&gt; def append_to(element, to=None):
+...     if to is None:
+...         to = []
+...     to.append(element)
+...     return to</code></pre>
+<h2 id="开发陷阱-二-：闭包变量绑定"><a href="" class="headerlink" title="开发陷阱(二)：闭包变量绑定"></a>开发陷阱(二)：闭包变量绑定</h2><p>看懂这个坑，需要先理解闭包，推荐一篇文章；</p>
+<p><a href="javascript:;" rel="external nofollow noopener noreferrer" target="_blank">刘志军：一步一步教你认识Python闭包</a></p>
+<p>下面我更换了 PPT 里的代码，让这个坑看得更清楚一些。</p>
+<pre><code class="python">&gt;&gt;&gt; def create():
+...     a = []
+...     for i in range(4):
+...         def demo(x):
+...             return x*i
+...         a.append(demo)
+...     return a
+... 
+&gt;&gt;&gt; for demo in create():
+...     print demo(2)
+... # 以为是 0 2 4 6 ，实际却是：
+6
+6
+6
+6</code></pre>
+<p>为什么会这样？<br>原因是：因为 <code>i</code> 是在闭包的作用域（demo 函数的外层作用域），而 Python 的闭包是迟绑定 ，这意味着闭包中用到的变量的值，是在内部函数被调用时查询得到的；</p>
+<p>也就是说，<code>create()</code> 生成实例时，内部的 <code>for</code> 循环开始，使 i 变量的最终变成了 3，当随后循环调用闭包 <code>demo(2)</code> 时，在内部调用的 <code>i</code> 实际都是 3，要解决这个问题，可以如下：</p>
+<pre><code class="python">&gt;&gt;&gt; def create():
+...     a = []
+...     for i in range(4):
+...         def demo(x, i=i):  # 把i绑定成demo的参数
+...             return x*i
+...         a.append(demo)
+...     return a
+... 
+&gt;&gt;&gt; # 或者这样:
+&gt;&gt;&gt; from functools import partial
+&gt;&gt;&gt; from operator import mul
+&gt;&gt;&gt; def create_multipliers():
+...     return [partial(mul, i) for i in range(5)]
+... 
+&gt;&gt;&gt; # 另外我发现也可以改成生成器表达式：
+&gt;&gt;&gt; def create_multipliers():
+...     return (lambda x : i * x for i in range(4))</code></pre>
+<p>中间还有一些其他内建模块的用法，廖大的教程里都有，就不赘述</p>
+<p><a href="javascript:;" rel="external nofollow noopener noreferrer" target="_blank">常用内建模块</a></p>
+
+            <hr>
+          </div>
+          <br>
+          <div>
+            
+            <p>
+              <i class="iconfont icon-tag"></i>
+              
+                <a class="hover-with-bg" href="javascript:;">Python</a>
+              
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="javascript:;" rel="external nofollow noopener noreferrer" target="_blank">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="static/picture/20190818175845.jpg" srcset="static/picture/loading.gif" "="" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;"> <p class="text-center">关注公众号: 面向人生编程</p><p class="text-center">回复【资料】获取精选学习资料</p>
+    </div>
+  </div>
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="javascript:;" target="_blank" rel="external nofollow noopener noreferrer"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="javascript:;" target="_blank" rel="external nofollow noopener noreferrer"> <b>Fluid</b></a>
+    <br>
+    
+      <a href="javascript:;" target="_blank" rel="external nofollow noopener noreferrer">浙ICP备19029560号-1</a>
+      
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/popper.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/mdb.min.js"></script>
+<script src="static/js/main.js"></script>
+
+  <script src="static/js/lazyload.js"></script>
+
+
+  
+    <script src="static/js/tocbot.min.js"></script>
+  
+  <script src="static/js/post.js"></script>
+
+
+  <script src="static/js/prettify.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+  <script src="static/js/typed.min.js"></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "适合 Python 初学者的一些技巧和坑&nbsp;",
+      ],
+      cursorChar: "|",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+  <script src="static/js/anchor.min.js"></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="static/js/local-search.js"></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+</body>
+</html>
