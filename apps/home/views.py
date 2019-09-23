@@ -1,18 +1,31 @@
 # -*- coding:utf-8 -*-
-from . import home
-from flask import Flask
-from flask import render_template
+
+from flask import (
+    Blueprint,
+    views,
+    render_template,
+    request,
+    session,
+    redirect,
+    url_for,
+    g,
+    jsonify
+)
 import os
-app = Flask(__name__)
+from exts import db,mail
+
+home = Blueprint('home',__name__)
+
+
 
 @home.route('/')
 @home.route('/index')
 def index():
-    filename = os.path.join(app.root_path, '../public','index.html')
-    print(filename)
-    with open(filename,'w') as f:
-        f.write(str(render_template('home/index.html')))
-        f.close()
+    # filename = os.path.join(home.root_path, '../public','index.html')
+    # print(filename)
+    # with open(filename,'w') as f:
+    #     f.write(str(render_template('home/index.html')))
+    #     f.close()
     return render_template('home/index.html')
       
 
