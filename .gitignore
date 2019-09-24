@@ -104,9 +104,6 @@ venv.bak/
 .mypy_cache/
 
 .idea
+.idea/
+git
 
-<<<<<<< HEAD
-git
-=======
-git
->>>>>>> 6785aa67444291839bbc082906fda32673f26263
