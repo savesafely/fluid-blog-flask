@@ -16,7 +16,7 @@ from .models import (
 )
 import os
 from exts import db, mail
-
+import config
 home = Blueprint('home', __name__)
 
 
@@ -51,6 +51,6 @@ def about():
     return render_template('home/about.html')
 
 
-@home.errorhandler(404)
+@home.app_errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html',), 404
