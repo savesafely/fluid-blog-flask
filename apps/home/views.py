@@ -17,8 +17,12 @@ from .models import (
 import os
 import config
 from exts import db, mail
+<<<<<<< HEAD
 from flask_paginate import Pagination, get_page_parameter
 
+=======
+import config
+>>>>>>> 6785aa67444291839bbc082906fda32673f26263
 home = Blueprint('home', __name__)
 
 
@@ -58,6 +62,6 @@ def about():
     return render_template('home/about.html')
 
 
-@home.errorhandler(404)
+@home.app_errorhandler(404)
 def page_not_found(e):
-    return render_template('404.html'), 404
+    return render_template('404.html',), 404

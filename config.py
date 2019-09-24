@@ -4,5 +4,9 @@ DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'sqlite:///test.db'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+<<<<<<< HEAD
 #分页设置
 PER_PAGE = 10
+=======
+#SERVER_NAME = ''
+>>>>>>> 6785aa67444291839bbc082906fda32673f26263
