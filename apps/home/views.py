@@ -17,14 +17,10 @@ from .models import (
 import os
 import config
 from exts import db, mail
-<<<<<<< HEAD
 from flask_paginate import Pagination, get_page_parameter
-
-=======
 import config
->>>>>>> 6785aa67444291839bbc082906fda32673f26263
-home = Blueprint('home', __name__)
 
+home = Blueprint('home', __name__)
 
 @home.route('/')
 @home.route('/index')
