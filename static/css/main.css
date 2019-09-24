@@ -465,7 +465,7 @@ h6::before {
 .category-tree-list .category-tree-list-link {
   display: inline-block;
   padding: 0.1rem 0.55rem;
-  font-weight: 350;
+  font-weight: 300;
 }
 .category-tree-list .category-tree-list-count {
   padding-left: 0.5rem;
@@ -481,8 +481,47 @@ h6::before {
 .tagcloud a {
   display: inline-block;
   padding: 0.1rem 0.55rem;
-  font-weight: 350;
+  font-weight: 300;
 }
 .tagcloud a:hover {
   color: #1abc9c !important;
 }
+.pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em;
+    margin-left: 0;
+    font-size: 12px;
+}
+.pagination-page-info b {
+    color: black;
+    background: #6aa6ed;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 150%;
+}
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+.my_page{ margin:0 35%;}
+
+.my_page .pagination li {display: inline;}
+
+.my_page .pagination li a {
+    color: black;
+    text-align: center;
+    padding: 8px 16px;
+    text-decoration: none;
+   transition: background-color .3s;
+   border-radius: 5px;
+  border: 1px solid #ddd; /* Gray */
+
+}
+.my_page .pagination li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+.my_page .pagination li a:hover:not(.active) {background-color: #4CAF50;}

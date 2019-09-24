@@ -15,7 +15,9 @@ from .models import (
     BlogModel
 )
 import os
+import config
 from exts import db, mail
+from flask_paginate import Pagination, get_page_parameter
 
 home = Blueprint('home', __name__)
 
@@ -28,12 +30,17 @@ def index():
     # with open(filename,'w') as f:
     #     f.write(str(render_template('home/index.html')))
     #     f.close()
-
+    page = request.args.get(get_page_parameter(),type=int,default=1)
+    start = (page - 1) * config.PER_PAGE
+    end = start + config.PER_PAGE
+    total = BlogModel.query.filter().count()
+    # print(total)
+    pagination = Pagination(page=page,start=start,end=end,total=total)
     # db.create_all()
     # data = BlogModel('你好','Juukee')
     # db.session.add(data)
     # db.session.commit()
-    return render_template('home/index.html')
+    return render_template('home/index.html',pagination=pagination)
 
 
 @home.route('/archives')

@@ -8,9 +8,6 @@ class BlogModel(db.Model):
     content = db.Column(db.Text(1000),nullable=False)
     create_time = db.Column(db.DATETIME,default=datetime.utcnow())
 
-
-    def __init__(self,title,content):
+    def __init__(self, title, content):
         self.title = title
         self.content = content
-
-
