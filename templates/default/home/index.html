@@ -28,15 +28,7 @@
     <link rel="stylesheet" href="static/css/main.css">
 
 
-    <script>
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?829ca75dc8d623c50657258008415521";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
+   
 
 </head>
 
@@ -135,6 +127,9 @@
 
                                     <div class="index-excerpt">
                                         <div class="index-text mb-1">
+                                            {% for blog in blogs %}
+                                            {{ blog.title }}
+                                            {% endfor %}
                                             9 月 6 日下午，多位业内人士称，杭州知名大数据服务公司杭州魔蝎数据科技有限公司，疑似被相关执法人员控制，其中一位周姓核心高管人员被警方带走。
 
                                             以上是前几天技术圈传播的一则新闻，又一家数据公司被调查，很多数据从业者、爬虫开发者发出了“感叹” ——

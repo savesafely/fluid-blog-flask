@@ -20,7 +20,7 @@ from exts import db, mail
 from flask_paginate import Pagination, get_page_parameter
 import config
 
-home = Blueprint('home', __name__)
+home = Blueprint('home', __name__,template_folder=config.TEMPLATE+'/'+config.DEFAULT_THEME+'/home')
 
 @home.route('/')
 @home.route('/index')
@@ -36,26 +36,32 @@ def index():
     total = BlogModel.query.filter().count()
     # print(total)
     pagination = Pagination(page=page,start=start,end=end,total=total)
+    blogs = BlogModel.query.slice(start,end)
     # db.create_all()
     # data = BlogModel('你好','Juukee')
     # db.session.add(data)
     # db.session.commit()
-    return render_template('home/index.html',pagination=pagination)
+    context = {
+     'blogs' : blogs,
+     'pagination' : pagination
+
+    }
+    return render_template('index.html',**context)
 
 
 @home.route('/archives')
 def archives():
-    return render_template('home/archives.html')
+    return render_template('archives.html')
 
 
 @home.route('/tags')
 def tags():
-    return render_template('home/tags.html')
+    return render_template('tags.html')
 
 
 @home.route('/about')
 def about():
-    return render_template('home/about.html')
+    return render_template('about.html')
 
 
 @home.app_errorhandler(404)
