@@ -28,7 +28,7 @@ def index():
     # filename = os.path.join(home.root_path, '../public','index.html')
     # print(filename)
     # with open(filename,'w') as f:
-    #     f.write(str(render_template('home/index.html')))
+    #     f.write(str(render_template('home/index.html'),encoding='utf-8'))
     #     f.close()
     page = request.args.get(get_page_parameter(),type=int,default=1)
     start = (page - 1) * config.PER_PAGE
