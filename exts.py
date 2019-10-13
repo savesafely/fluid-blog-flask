@@ -1,7 +1,10 @@
 #encoding: utf-8
-from flask_sqlalchemy import SQLAlchemy
+from playhouse.db_url import connect
 from flask_mail import Mail
+from config import DATABASE
+from flask_caching import Cache
 
-db = SQLAlchemy()
+db = connect(DATABASE)
 mail = Mail()
+cache = Cache()
 
