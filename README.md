@@ -26,3 +26,8 @@ gunicorn -c gunicorn.py run:app
 ```bash
  sudo pip3 install -r requirements.txt --trusted-host mirrors.aliyun.com -i http://mirrors.aliyun.com/pypi/simple/ 
  ```
+
+ ##自动生成模块
+ ```
+python -m pwiz -e sqlite test.db > test.py
+ ```

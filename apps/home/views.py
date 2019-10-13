@@ -33,14 +33,9 @@ def index():
     page = request.args.get(get_page_parameter(),type=int,default=1)
     start = (page - 1) * config.PER_PAGE
     end = start + config.PER_PAGE
-    total = BlogModel.query.filter().count()
-    # print(total)
+    total = BlogModel.select().count()
     pagination = Pagination(page=page,start=start,end=end,total=total)
-    blogs = BlogModel.query.slice(start,end)
-    # db.create_all()
-    # data = BlogModel('你好','Juukee')
-    # db.session.add(data)
-    # db.session.commit()
+    blogs = BlogModel.select()
     context = {
      'blogs' : blogs,
      'pagination' : pagination
