@@ -11,12 +11,16 @@ from flask import (
     jsonify
 )
 from exts import db,mail
+import config
 
-admin = Blueprint('admin',__name__,url_prefix='/admin')
+admin = Blueprint('admin',__name__,template_folder=config.TEMPLATE+'/admin',url_prefix='/admin')
 
-def view(html):
-    return render_template('admin/' + html)
-
-@admin.route('/')
+#@admin.route('/')
+@admin.route('/index/')
 def index():
-    return view('index.html')
+    print(config.TEMPLATE+'/admin')
+    return render_template('index.html')
+
+@admin.route('/editor/')
+def editor():
+    return render_template('editor.html')
