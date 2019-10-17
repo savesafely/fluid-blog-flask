@@ -3,13 +3,12 @@ from exts import db
 from datetime import datetime
 
 class BlogModel(pw.Model):
-    __tablename__ = 'blog'
     id = pw.AutoField()
     title = pw.CharField(verbose_name='标题',max_length=100,null=False)
     content = pw.TextField(verbose_name='内容',null=False)
     create_time = pw.DateTimeField(verbose_name='创建时间',default=datetime.utcnow())
 
-    class meta:
+    class Meta:
         database = db  # 这里是数据库链接，为了方便建立多个表，可以把这个部分提炼出来形成一个新的类
         table_name = 'blog'  # 这里可以自定义表名
 
@@ -18,21 +17,24 @@ class BlogModel(pw.Model):
 
 
 
-# Field Type	Sqlite	Postgresql	MySQL
+# Field Type 	Sqlite 	Postgresql 	MySQL
+# AutoField 	integer 	serial 	integer
+# BigAutoField 	integer 	bigserial 	bigint
 # IntegerField 	integer 	integer 	integer
 # BigIntegerField 	integer 	bigint 	bigint
 # SmallIntegerField 	integer 	smallint 	smallint
-# AutoField 	integer 	serial 	integer
+# IdentityField 	not supported 	int identity 	not supported
 # FloatField 	real 	real 	real
 # DoubleField 	real 	double precision 	double precision
 # DecimalField 	decimal 	numeric 	numeric
 # CharField 	varchar 	varchar 	varchar
 # FixedCharField 	char 	char 	char
-# TextField 	text 	text 	longtext
+# TextField 	text 	text 	text
 # BlobField 	blob 	bytea 	blob
 # BitField 	integer 	bigint 	bigint
 # BigBitField 	blob 	bytea 	blob
 # UUIDField 	text 	uuid 	varchar(40)
+# BinaryUUIDField 	blob 	bytea 	varbinary(16)
 # DateTimeField 	datetime 	timestamp 	datetime
 # DateField 	date 	date 	date
 # TimeField 	time 	time 	time
@@ -54,3 +56,13 @@ class BlogModel(pw.Model):
 # choices = None – an optional iterable containing 2-tuples of value, display
 # help_text = None – string representing any helpful text for this field
 # verbose_name = None – string representing the “user-friendly” name of this field
+# Field type 	Special Parameters
+# CharField 	max_length
+# FixedCharField 	max_length
+# DateTimeField 	formats
+# DateField 	formats
+# TimeField 	formats
+# TimestampField 	resolution, utc
+# DecimalField 	max_digits, decimal_places, auto_round, rounding
+# ForeignKeyField 	model, field, backref, on_delete, on_update, deferrable lazy_load
+# BareField 	adapt
