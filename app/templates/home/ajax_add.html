@@ -1,0 +1,37 @@
+
+    {% for data in datas %}
+        <div class="row mb-4 mx-auto">
+
+            <div class="col-12 col-md-4 m-auto">
+                <a href="Index4" target="_blank">
+                    <img src="{{ url_for('static',filename='picture/20190901210149.jpg') }}" srcset="static/picture/loading.gif"
+                         alt="又一家数据公司被查，爬虫到底做错了什么？"
+                         class="img-fluid rounded z-depth-3 index-thumbnails">
+                </a>
+            </div>
+
+            <div class="col-12 col-md-8 m-auto">
+                <a href="Index4" target="_blank">
+                    <p class="h4 index-header">{{ data.title }}</p>
+
+                    <div class="index-excerpt">
+                        <div class="index-text mb-1">
+                            {{ data.content }}
+                        </div>
+                    </div>
+                </a>
+
+                <div>
+
+                    <i class="iconfont icon-riqi2"></i>&nbsp;{{ data.addtime }}&nbsp;&nbsp;
+
+                    <i class="iconfont icon-tag"></i>
+
+                    <a href="javascript:;">Python</a>&nbsp;
+
+                    <a href="爬虫">{{ data.tag }}</a>&nbsp;
+
+                </div>
+            </div>
+        </div>
+    {% endfor %}
